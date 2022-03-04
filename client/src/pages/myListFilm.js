@@ -1,15 +1,11 @@
 import NavbarComponent from '../component/navbar'
+import MyFilm from '../component/myFilm'
 
 export default function MyListFilm(){
     return(
         <>
         <NavbarComponent/>
-        <div>
-            <h2 style={{color:"white"}}>My List Film</h2>
-            <div>
-                <img src=""/>
-            </div>
-        </div>
+        <MyFilm/>
         </>
     )
 } 

@@ -1,16 +1,22 @@
 import {Navbar, Container,Button,Form, Modal, NavDropdown} from 'react-bootstrap'
 import logo from '../images/logo.svg'
-import { useState, useContext } from 'react'
+import { useState, useContext} from 'react'
+import logoutbar from '../icons/logout.png'
+import MyFilm from '../icons/myfilm.png'
+import profilejpg from '../icons/profile.png'
 import Login from './formLogin'
 import Register from './formRegister'
-import pp from '../images/dedpol.png'
+import noPhoto from '../images/noPhoto.png'
 import { UserContext } from '../context/userContext'
 import { useNavigate, Link } from 'react-router-dom'
+
 
 export default function NavbarComponent(){
     const [login, setLogin] = useState(false)
     const [register, setRegister] = useState(false)
     const[state, dispatch] = useContext(UserContext)
+    const path = "http://localhost:5000/uploads/"
+
 
     const Navigate = useNavigate()
 
@@ -33,15 +39,10 @@ export default function NavbarComponent(){
                 </Link>
             </Navbar.Collapse>
             {state.isLogin === true ? (
-              <NavDropdown title={<img src={pp} alt="" width="50px" height="50px" style={{borderRadius:"100%"}} />} id="nav-dropdown" style={{backgroundColor:"black", dropdownToggle:"none"}}>
-             <Link to="/listFilm">
-              <NavDropdown.Item >My list item</NavDropdown.Item>
-              </Link>
-              <Link to="/profile">
-              <NavDropdown.Item >My Profile</NavDropdown.Item>
-              </Link>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+              <NavDropdown bg="dark" title={state?.photo === undefined ? <img src={noPhoto} alt="pp" width="50px" height="50px" style={{borderRadius:"100%"}}/> : <img src={path + state?.photo} alt="pp" width="50px" height="50px" style={{borderRadius:"100%"}} />} id="nav-dropdown" className="dropdown-toggle">
+              <NavDropdown.Item className='menu-bar' onClick={()=> Navigate('/listFilm')}><img src={MyFilm} alt="myfilm" width="25px" height="25px"/> My list item</NavDropdown.Item>
+              <NavDropdown.Item className='menu-bar' onClick={()=> Navigate('/profile')} ><img src={profilejpg} alt="profile" width="25px" height="25px"/> My Profile</NavDropdown.Item>
+              <NavDropdown.Item className='menu-bar' onClick={logout}><img src={logoutbar} alt="myfilm" width="25px" height="25px"/> Logout</NavDropdown.Item>
             </NavDropdown>
             ):(
               <Form className="d-flex ">

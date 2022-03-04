@@ -41,11 +41,11 @@ function App() {
       }
 
       let payload = response.data.data.user
-
+      console.log(payload)
       payload.token = localStorage.token
 
       dispatch({
-        type : 'USER_SUCCES',
+        type : 'USER_SUCCESS',
         payload
       })
       

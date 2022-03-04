@@ -27,7 +27,7 @@ module.exports = {
         onDelete: "CASCADE",
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       accountNumber: {
         type: Sequelize.STRING

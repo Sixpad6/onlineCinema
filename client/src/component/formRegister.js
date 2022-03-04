@@ -14,6 +14,7 @@ export default function Register(){
         email: "",
         password: "",
         fullname: "",
+        status: "pelanggan"
     })
 
     const {email, password, fullname} = form
@@ -40,7 +41,6 @@ export default function Register(){
       // Convert form data to string here ...
       const data = {
           ...form,
-          status: 'pelanggan'
       }
       const body = JSON.stringify(data);
 

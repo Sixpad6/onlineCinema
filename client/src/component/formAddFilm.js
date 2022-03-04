@@ -1,6 +1,5 @@
 import clip from '../icons/Clip.png'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { API } from '../config/api'
 import {Alert} from 'react-bootstrap'
 
@@ -9,7 +8,6 @@ export default function FormAdd(){
     const [preview, setPreview] = useState(null)
     const [category, setCategory] = useState([])
     const[message, setMessage] = useState(null)
-    const Navigate = useNavigate()
 
 
     const getCategory = async (e) =>{
@@ -24,17 +22,19 @@ export default function FormAdd(){
     }
     const [form, setForm] = useState({
         title:"",
-        idCategory:"",
+        idCategory: 1,
         price : "",
         filmUrl: "",
         description : "",
         thumbnail : ""
     })
 
-    const handleChange= (e) =>{
+    const {title, price, filmUrl, description, thumbnail} = form
+
+    const handleChange = (e) =>{
         setForm({
             ...form,
-            [e.target.name]: e.target.type ? e.target.files : e.target.value
+            [e.target.name]: e.target.type === 'file' ? e.target.files : e.target.value
         })
 
         if(e.target.type === 'file'){
@@ -54,21 +54,19 @@ export default function FormAdd(){
               };
 
               const formData = new FormData()
-              console.log(formData)
 
               formData.set('thumbnail', form.thumbnail[0], form.thumbnail[0].name)
               formData.set('title', form.title)
               formData.set('idCategory', parseInt(form.idCategory))
-              formData.set('price', form.price)
+              formData.set('price', parseInt(form.price))
               formData.set('filmUrl', form.filmUrl)
               formData.set('description', form.description)
             
               const response = await API.post('/film', formData, config)
               
               console.log(response)
-              console.log(formData)
+              console.log(form)
 
-            // Navigate('/admin')
 
               const alert = (
                 <Alert variant="success" className="py-1">
@@ -76,6 +74,14 @@ export default function FormAdd(){
                 </Alert>
               );
               setMessage(alert);
+
+              setForm({
+                title:"",
+                price : "",
+                filmUrl: "",
+                description : "",
+                thumbnail : ""
+              })
 
         } catch (error) {
             console.log(error)
@@ -85,6 +91,7 @@ export default function FormAdd(){
                 </Alert>
               );
               setMessage(alert);
+              
               setForm({
                 title:"",
                 price : "",
@@ -99,6 +106,7 @@ export default function FormAdd(){
     useEffect(()=>{
         getCategory()
     },[])
+
 
     return (
         <div className="d-flex form-add">
@@ -119,9 +127,9 @@ export default function FormAdd(){
                 </div>
               )}
             <div>
-                <input type="text" name='title' placeholder="Title" className="form-title" onChange={handleChange}/>
+                <input type="text" name='title' placeholder="Title" value={title} className="form-title" onChange={handleChange}/>
                 <label htmlFor="file"> Attach Thumbnail <img src={clip} alt="clipboard"/> </label>
-                <input type="file" id="file" name='thumbnail' hidden onChange={handleChange}/>
+                <input type="file" id="file" value={thumbnail} name='thumbnail' hidden onChange={handleChange}/>
             </div> 
             <div>
                     <select id='select' as="select" name="idCategory" onChange={handleChange} className="formInput">
@@ -131,13 +139,13 @@ export default function FormAdd(){
                     </select>
             </div>
             <div>
-                <input type="text" placeholder="Price" name='price' className="formInput" onChange={handleChange}/>
+                <input type="text" placeholder="Price" value={price} name='price' className="formInput" onChange={handleChange}/>
             </div>
             <div>
-                <input type="text" name='filmUrl' placeholder="Link Film" className="formInput" onChange={handleChange}/>
+                <input type="text" name='filmUrl' value={filmUrl} placeholder="Link Film" className="formInput" onChange={handleChange}/>
             </div>
             <div>
-                <textarea type="text" name='description' placeholder="Description" onChange={handleChange}>
+                <textarea type="text" name='description' value={description} placeholder="Description" onChange={handleChange}>
 
                 </textarea>
             </div>

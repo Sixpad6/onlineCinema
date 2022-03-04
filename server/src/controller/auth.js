@@ -8,6 +8,7 @@ exports.register = async(req, res) => {
         email : joi.string().email().required(),
         password : joi.string().min(4).required(),
         fullname : joi.string().min(3).required(),
+        status : joi.string().required()
     })
 
     const { error } = schema.validate(req.body)
@@ -100,6 +101,7 @@ exports.login = async (req, res) =>{
             status: "success",
             data: {
                 user : {
+                    id: userExist.id,
                     fullname : userExist.fullname,
                     email : userExist.email,
                     status : userExist.status,
@@ -144,6 +146,7 @@ exports.checkAuth = async (req, res) => {
             fullname: dataUser.fullname,
             email: dataUser.email,
             status: dataUser.status,
+            photo : dataUser.photo
           },
         },
       });

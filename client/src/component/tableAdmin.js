@@ -1,8 +1,48 @@
 import { Table, NavDropdown } from "react-bootstrap";
 import togle from '../icons/status.png'
+import { useState,useEffect } from "react";
+import { API } from "../config/api";
 
 export default function TableAdmin(){
+  const [transaction, setTransaction] = useState([])
+  const path = "http://localhost:5000/uploads/"
+
+  const getTransaction = async(e) =>{
+    try {
+      const response =  await API.get('transaction')
+      setTransaction(response.data.transactions)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleSubmit = async (id, value) =>{
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+      }
+    }
+
+    let body = {
+      status : value
+    }
+
+    body = JSON.stringify(body)
+
+    try {
+      await API.patch(`transaction/${id}`,body ,config )
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
+
+  useEffect(()=>{
+    getTransaction()
+  },[transaction])
     return(
+      <div className="con-table">
         <Table variant="dark" >
         <thead>
           <tr>
@@ -16,21 +56,25 @@ export default function TableAdmin(){
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>wakwaw</td>
-            <td>wikwik</td>
+          {transaction.map((item)=>(
+            <tr key={item.id}>
+            <td>{item.id}</td>
+            <td>{item.userTransaction.fullname}</td>
+            <td><img src={path + item.transferProof} alt='bukti' width="40px" height="40px"/></td>
+            <td>{item.filmTransaction.title}</td>
+            <td>{item.accountNumber}</td>
+            {item.status === "Success" ? <td style={{color:"rgb(13, 194, 13)"}}>{item.status}</td> :<td>{item.status}</td>}
             <td>
-            <NavDropdown title={<img src={togle} alt="" width="20px" height="20px"/>} id="nav-dropdown" style={{backgroundColor:"black", dropdownToggle:"none"}}>
-              <NavDropdown.Item eventKey="4.1" >Approved</NavDropdown.Item>
-              <NavDropdown.Item eventKey="4.2">Cancel</NavDropdown.Item>
+            <NavDropdown title={<img src={togle} alt="" width="20px" height="20px"/>} id="nav-dropdown" className=".dropdown-toggle" style={{backgroundColor:"black", dropdownToggle:"none"}}>
+              <NavDropdown.Item className="menu-trans-approved" onClick={()=> handleSubmit(item.id, "Success")} >Approved</NavDropdown.Item>
+              <NavDropdown.Item className="menu-trans-cancel" onClick={()=> handleSubmit(item.id, "Cancel")} >Cancel</NavDropdown.Item>
             </NavDropdown>
             </td>
           </tr>
+          ))}
+          
         </tbody>
       </Table>
+      </div>
     )
 }

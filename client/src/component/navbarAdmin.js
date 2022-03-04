@@ -27,12 +27,14 @@ export default function NavbarAdmin(){
         <Navbar bg="black" expand="lg">
         <Container>
             <Navbar.Collapse id="navbarScroll">
+              <Link to="/admin">
                 <div>
                 <img src={logo} alt="logo"/>
                 </div>
+                </Link>
             </Navbar.Collapse>
             {state.isLogin === true ? (
-              <NavDropdown title={<img src={pp} alt="" width="50px" height="50px" style={{borderRadius:"100%"}} />} id="nav-dropdown" style={{backgroundColor:"black", dropdownToggle:"none"}}>
+              <NavDropdown title={<img src={pp} alt="" width="50px" height="50px" style={{borderRadius:"100%"}} />} id="nav-dropdown" className='dropDown'>
                 
               <NavDropdown.Item onClick={()=> Navigate('/addFilm')} >Add film</NavDropdown.Item>
               <NavDropdown.Divider />

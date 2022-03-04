@@ -26,8 +26,6 @@ export default function Login(){
 
     const handleSubmit = async (e) =>{
         try {
-            e.preventDefault()
-
             const config = {
                 headers: {
                   'Content-type': 'application/json',
@@ -42,7 +40,7 @@ export default function Login(){
               if(response?.status === 200){
                 dispatch({
                     type: 'LOGIN_SUCCESS',
-                    payload: response.data.data,
+                    payload: response.data.data.user,
                   });
               }
 
@@ -58,6 +56,10 @@ export default function Login(){
                 </Alert>
               );
               setMessage(alert);
+              setform({
+                email:"",
+                password:""
+            })
         } catch (error) {
             const alert = (
                 <Alert variant="danger" className="py-1">
